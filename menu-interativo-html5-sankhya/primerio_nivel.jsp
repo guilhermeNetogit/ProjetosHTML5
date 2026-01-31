@@ -20,19 +20,32 @@
 
     <snk:load/>
     <script type='text/javascript'>
-       function abrirEquipamentos(){openLevel('06V', {})}       
+       function abrirEquipamentos(){openLevel('06V', {})}
+       function abrirLocalizacao(){openLevel('04G', {})}    
        function abrirDefensivos(){openLevel('03F', {})}
        function abrirFertilizantes(){openLevel('03N', {})}
        function abrirHoras(){openLevel('044', {})}
-       function abrirDiesel(){openLevel('04G', {})}
+       function abrirDiesel(){openLevel('06U', {})}
        function abrirDiarias(){openLevel('04U', {})}
 
     </script>
 </head>
 
 <body class="principal">
-    
+
     <div class="cards-list">
+
+        <a href="#" onclick="javascript:abrirLocalizacao()" class="custom-card"> 
+            <div class="card 1">
+                <div class="card_image" id="background_card_6"> 
+                     <img src="${BASE_FOLDER}/assets/img/localizacao.png" /> 
+                    </div>
+                <div class="card_title title-white">
+                    <p></p>
+                </div>
+            </div>
+        </a>
+
         <a href="#" onclick="javascript:abrirEquipamentos()" class="custom-card"> 
             <div class="card 1">
                 <div class="card_image" id="background_card_5"> 
@@ -44,7 +57,6 @@
             </div>
         </a>
     
-    <div class="cards-list">
         <a href="#" onclick="javascript:abrirDefensivos()" class="custom-card"> 
             <div class="card 1">
                 <div class="card_image" id="background_card_2"> 

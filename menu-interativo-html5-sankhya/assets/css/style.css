@@ -4,18 +4,24 @@
 .cards-list {
   z-index: 0;
   width: 100%;
+  max-width: 1400px;            /* ← evita que fique muito esticado em telas grandes */
   display: flex;
-  justify-content: space-around;
+  justify-content: center;      /*space-around*/
+  align-items: flex-start;      /* alinha no topo */
   flex-wrap: wrap;
+  gap: 30px;                     /* ← substitui margin dos cards */
+  padding: 20px;                 /* opcional: espaço nas bordas */
 }
 .card {
-  margin: 20px auto;
+  margin: 0;
   width: 270px;
   height: 210px;
   border-radius: 10px;
-  box-shadow: 1px 1px 4px 2px rgba(0,0,0,0.25), 1px 1px 4px 2px rgba(0,0,0,0.22);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   cursor: pointer;
-  transition: 0.4s;
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  background: white;            /* fundo branco caso a imagem não cubra tudo */
 }
 
 a.custom-card,
@@ -26,17 +32,23 @@ a.custom-card:hover {
 }
 
 .card_image {
-width: inherit;
-height: inherit;
-border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: inherit;    /* herda a cor do id #background_card_X */
 }
 
 
 .card .card_image img {
-  width: 200px;
-  height: 200px;
-  margin: 10px 20px;
-  }
+  max-width: 75%;               /* 75–80% geralmente fica bom */
+  max-height: 75%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  /* remova ou comente: margin: 10px 20px; */
+}
 
 
 
@@ -57,9 +69,8 @@ margin-top: -80px;
 height: 40px;
 }
 .card:hover {
-transform: scale(0.95, 0.95);
-box-shadow: 1px 1px 4px 2px rgba(0,0,0,0.25), 
-1px 1px 4px 2px ,rgba(0,0,0,0.22);
+  transform: scale(1.04);       /* um pouco maior que 0.95 fica mais natural */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
 }
 .title-white {
 color: white;
@@ -94,4 +105,8 @@ color: black;
 
 #background_card_5{
   background-color: #b1c151;
+}
+
+#background_card_6{
+  background-color: #e5e5e5;
 }
