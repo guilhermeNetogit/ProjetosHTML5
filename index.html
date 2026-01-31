@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Primeiro Nivel</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <snk:load/>
+    <script type='text/javascript'>
+       function abrirDefensivos(){openLevel('lvl_mp7kca', {})}
+       function abrirFertilizantes(){openLevel('lvl_mrkph2', {})}
+       function abrirHoras(){openLevel('lvl_mrkpku', {})}
+       function abrirDiesel(){openLevel('lvl_mrkpmj', {})}
+       function abrirDiarias(){openLevel('lvl_mrkpnm', {})}
+    </script>
+</head>
+
+<body class="principal">
+     
+    <div class="cards-list">
+        <a href="#" onclick="javascript:abrirDefensivos()" class="custom-card"> 
+            <div class="card">
+                <div class="card_image" id="background_card_2"> 
+                    <img src="assets/img/defensivos.png" /> 
+                </div>
+                <div class="card_title title-white">
+                    <p>Defensivos</p>
+                </div>
+            </div>
+        </a>
+
+
+        <a href="#" onclick="javascript:abrirFertilizantes()" class="custom-card"> 
+            <div class="card">
+                <div class="card_image" id="background_card_4"> 
+                    <img src="assets/img/fertilizante.png" /> 
+                </div>
+                <div class="card_title title-white">
+                    <p>Fertilizantes</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#" onclick="javascript:abrirHoras()" class="custom-card"> 
+            <div class="card">
+                <div class="card_image"  id="background_card_3"> 
+                    <img src="assets/img/horas.png" /> 
+                </div>
+                <div class="card_title title-white">
+                    <p>Horas </p>
+                </div>
+            </div>
+        </a>
+
+       <a href="#" onclick="javascript:abrirDiesel()" class="custom-card"> 
+           <div class="card">
+               <div class="card_image"  id="background_card_2"> 
+                <img src="assets/img/diesel.png" /> 
+            </div>
+               <div class="card_title title-white">
+                  <p>Diesel </p>
+               </div>
+           </div>
+       </a>
+
+       <a href="#" onclick="javascript:abrirDiarias()" class="custom-card"> 
+            <div class="card ">
+                <div class="card_image" id="background_card_1" > 
+                    <img src="assets/img/diarias.png" /> 
+                </div>
+                <div class="card_title title-white">
+                    <p>Diarias </p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+</body>
+</html>
