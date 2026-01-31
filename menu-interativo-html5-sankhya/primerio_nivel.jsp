@@ -24,7 +24,7 @@
        function abrirLocalizacao(){openLevel('04G', {})}    
        function abrirDefensivos(){openLevel('03F', {})}
        function abrirFertilizantes(){openLevel('03N', {})}
-       function abrirHoras(){openLevel('044', {})}
+       function abrirHoras(){openLevel('07B', {})}
        function abrirDiesel(){openLevel('06U', {})}
        function abrirDiarias(){openLevel('04U', {})}
 
@@ -34,6 +34,18 @@
 <body class="principal">
 
     <div class="cards-list">
+
+        <a href="https://www.gigantaolocadora.com.br/" target="_blank" class="custom-card">
+            <div class="card 1">
+                <div class="card_image" id="background_card_4">
+                    <img src="${BASE_FOLDER}/assets/img/link.png" />
+                    </div>
+                <div class="card_title title-white">
+                    <p>Link Externo</p>
+                </div>
+            </div>
+        </a>
+
 
         <a href="#" onclick="javascript:abrirLocalizacao()" class="custom-card"> 
             <div class="card 1">
@@ -70,7 +82,7 @@
 
         <a href="#" onclick="javascript:abrirFertilizantes()" class="custom-card"> 
             <div class="card 1">
-                <div class="card_image" id="background_card_4"> 
+                <div class="card_image" id="background_card_7"> 
                      <img src="${BASE_FOLDER}/assets/img/fertilizante.png" /> 
                 </div>
                 <div class="card_title title-white">
