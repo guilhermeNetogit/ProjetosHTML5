@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Controle de Entregas A4</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="${BASE_FOLDER}/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="${BASE_FOLDER}/assets/css/style.css" rel="stylesheet">
+    
+    <style>
+        .saldo-negativo {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .saldo-positivo {
+            color: #28a745;
+        }
+        .consumo-alto {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .number-cell {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <main role="main">
+        <div class="table-responsive">
+            <section class="text-center">
+                <div class="container"><br>
+                    <h5>Controle de entregas A4 por setor</h5>
+                    <table class="table table-bordered table-condensed-main">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="text-center">Cód. CC</th>
+                                <th scope="col" class="text-center">Centro de Custo</th>
+                                <th scope="col" class="text-center">Cota Mensal</th>
+                                <th scope="col" class="text-center">Consumo Mensal Atual</th>
+                                <th scope="col" class="text-center">Saldo Mensal Disponível</th>
+                                <th scope="col" class="text-center">Cota Anual</th>
+                                <th scope="col" class="text-center">Consumo Anual Atual</th>
+                                <th scope="col" class="text-center">Saldo Anual Disponível</th>
+                                <th scope="col" class="text-center">Mês Referência</th>
+                                <th scope="col" class="text-center">Ano Referência</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- As linhas da tabela serão populadas dinamicamente pelo JSP -->
+                            <!-- Exemplo de estrutura de linha (não será exibida, apenas como referência) -->
+                            
+                            <tr>
+                                <th scope="row" class="text-center">1200000</th>
+                                <td class="text-center">SEG. DO TRABALHO</td>
+                                <td class="text-center number-cell">7</td>
+                                <td class="text-center number-cell">1</td>
+                                <td class="text-center number-cell saldo-positivo">6</td>
+                                <td class="text-center number-cell">84</td>
+                                <td class="text-center number-cell">11</td>
+                                <td class="text-center number-cell saldo-positivo">73</td>
+                                <td class="text-center">02/2026</td>
+                                <td class="text-center">2026</td>
+                            </tr>
+                        
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-secondary">
+                                <td colspan="2" class="text-right"><strong>TOTAIS:</strong></td>
+                                <td class="text-center"><strong>-</strong></td>
+                                <td class="text-center"><strong>-</strong></td>
+                                <td class="text-center"><strong>-</strong></td>
+                                <td class="text-center"><strong>-</strong></td>
+                                <td class="text-center"><strong>-</strong></td>
+                                <td class="text-center"><strong>-</strong></td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
