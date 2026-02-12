@@ -172,6 +172,8 @@ ORDER BY C.COTA_MES DESC, C.DESCRCENCUS;
                                         <c:set var="totalSaldoAno" value="${totalSaldoAno + saldoAno}" />
                                         
                                         <%-- Formatar números (remover .0) de forma SIMPLES --%>
+                                        <%-- Testar depois --%>
+                                        <%-- <c:set var="saldoAnoFmt"><fmt:formatNumber value="${saldoAno}" pattern="#.##" /></c:set> --%>
                                         <c:set var="cotaMesFmt">
                                             <c:choose>
                                                 <c:when test="${cotaMes == 7.0}">7</c:when>
