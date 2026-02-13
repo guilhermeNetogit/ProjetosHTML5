@@ -84,284 +84,257 @@
                                                 AND COALESCE(C.DTENTSAI, C.DTNEG) >= DATEFROMPARTS(YEAR(GETDATE()),
                                                 MONTH(GETDATE()), 1)
                                                 AND COALESCE(C.DTENTSAI, C.DTNEG) < DATEADD(MONTH, 1,
-                                                    DATEFROMPARTS(YEAR(GETDATE()), MONTH(GETDATE()), 1)) GROUP BY
-                                                    C.CODCENCUS ), CONSUMO_ANO AS ( SELECT C.CODCENCUS, SUM(CASE WHEN
+                                                    DATEFROMPARTS(YEAR(GETDATE()), MONTH(GETDATE()), 1)) AND C.DTNEG>
+                                                    '2026-01-31'
+                                                    GROUP BY
+                                                    C.CODCENCUS ),
+                                                    CONSUMO_ANO AS (
+                                                    SELECT C.CODCENCUS, SUM(CASE WHEN
                                                     I.ATUALESTOQUE < 0 THEN ABS(I.QTDNEG) ELSE 0 END) AS CONSUMO FROM
-                                                    TGFCAB C JOIN TGFITE I ON I.NUNOTA=C.NUNOTA WHERE I.CODPROD=3680 AND
-                                                    C.STATUSNOTA='L' AND I.ATUALESTOQUE <> 0
-                                                    AND I.RESERVA = 'N'
-                                                    AND COALESCE(C.DTENTSAI, C.DTNEG) >= DATEFROMPARTS(YEAR(GETDATE()),
-                                                    1, 1)
-                                                    AND COALESCE(C.DTENTSAI, C.DTNEG) < DATEADD(YEAR, 1,
-                                                        DATEFROMPARTS(YEAR(GETDATE()), 1, 1)) GROUP BY C.CODCENCUS )
-                                                        SELECT C.CODCENCUS, C.DESCRCENCUS AS CENTRO_CUSTO, C.COTA_MES,
-                                                        ISNULL(CM.CONSUMO, 0) AS CONSUMO_MES_ATUAL, (C.COTA_MES -
-                                                        ISNULL(CM.CONSUMO, 0)) AS SALDO_MES_DISPONIVEL, C.COTA_ANO,
-                                                        ISNULL(CA.CONSUMO, 0) AS CONSUMO_ANO_ATUAL, (C.COTA_ANO -
-                                                        ISNULL(CA.CONSUMO, 0)) AS SALDO_ANO_DISPONIVEL,
-                                                        FORMAT(GETDATE(), 'MM/yyyy' ) AS MES_REFERENCIA, YEAR(GETDATE())
-                                                        AS ANO_REFERENCIA FROM COTAS C LEFT JOIN CONSUMO_MES CM ON
-                                                        CM.CODCENCUS=C.CODCENCUS LEFT JOIN CONSUMO_ANO CA ON
-                                                        CA.CODCENCUS=C.CODCENCUS ORDER BY C.COTA_MES DESC,
-                                                        C.DESCRCENCUS; </snk:query>
+                                                        TGFCAB C JOIN TGFITE I ON I.NUNOTA=C.NUNOTA WHERE I.CODPROD=3680
+                                                        AND C.STATUSNOTA='L' AND I.ATUALESTOQUE <> 0
+                                                        AND I.RESERVA = 'N'
+                                                        AND COALESCE(C.DTENTSAI, C.DTNEG) >=
+                                                        DATEFROMPARTS(YEAR(GETDATE()),
+                                                        1, 1)
+                                                        AND COALESCE(C.DTENTSAI, C.DTNEG) < DATEADD(YEAR, 1,
+                                                            DATEFROMPARTS(YEAR(GETDATE()), 1, 1)) AND C.DTNEG>
+                                                            '2026-01-31'
+                                                            GROUP BY C.CODCENCUS )
+                                                            SELECT C.CODCENCUS, C.DESCRCENCUS AS CENTRO_CUSTO,
+                                                            C.COTA_MES,
+                                                            ISNULL(CM.CONSUMO, 0) AS CONSUMO_MES_ATUAL, (C.COTA_MES -
+                                                            ISNULL(CM.CONSUMO, 0)) AS SALDO_MES_DISPONIVEL, C.COTA_ANO,
+                                                            ISNULL(CA.CONSUMO, 0) AS CONSUMO_ANO_ATUAL, (C.COTA_ANO -
+                                                            ISNULL(CA.CONSUMO, 0)) AS SALDO_ANO_DISPONIVEL,
+                                                            FORMAT(GETDATE(), 'MM/yyyy' ) AS MES_REFERENCIA,
+                                                            YEAR(GETDATE())
+                                                            AS ANO_REFERENCIA
+                                                            FROM COTAS C
+                                                            LEFT JOIN CONSUMO_MES CM ON CM.CODCENCUS=C.CODCENCUS
+                                                            LEFT JOIN CONSUMO_ANO CA ON CA.CODCENCUS=C.CODCENCUS
+                                                            ORDER BY C.COTA_MES DESC,
+                                                            C.DESCRCENCUS; </snk:query>
 
-                                                        <!-- DEBUG: Verificar dados retornados -->
-                                                        <div style="display: none;">
-                                                            <h6>DEBUG - Dados retornados:</h6>
-                                                            <c:forEach items="${controle.rows}" var="row"
-                                                                varStatus="status">
-                                                                <p>Linha ${status.index + 1}:
-                                                                    COTA_MES=${row.COTA_MES},
-                                                                    CONSUMO_MES=${row.CONSUMO_MES_ATUAL},
-                                                                    SALDO_MES=${row.SALDO_MES_DISPONIVEL}
-                                                                </p>
+                                        <!-- DEBUG: Verificar dados retornados -->
+                                        <div style="display: none;">
+                                            <h6>DEBUG - Dados retornados:</h6>
+                                            <c:forEach items="${controle.rows}" var="row" varStatus="status">
+                                                <p>Linha ${status.index + 1}:
+                                                    COTA_MES=${row.COTA_MES},
+                                                    CONSUMO_MES=${row.CONSUMO_MES_ATUAL},
+                                                    SALDO_MES=${row.SALDO_MES_DISPONIVEL}
+                                                </p>
+                                            </c:forEach>
+                                        </div>
+
+                                        <c:choose>
+                                            <c:when test="${empty controle.rows}">
+                                                <div class="alert alert-warning">
+                                                    <h4>Nenhum dado encontrado</h4>
+                                                    <p>A query não retornou resultados.</p>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <%-- Inicializar totais --%>
+                                                    <c:set var="totalCotaMes" value="0" />
+                                                    <c:set var="totalConsumoMes" value="0" />
+                                                    <c:set var="totalSaldoMes" value="0" />
+                                                    <c:set var="totalCotaAno" value="0" />
+                                                    <c:set var="totalConsumoAno" value="0" />
+                                                    <c:set var="totalSaldoAno" value="0" />
+
+                                                    <table class="table table-bordered table-condensed-main">
+                                                        <thead class="thead-dark">
+                                                            <tr>
+                                                                <th scope="col" class="text-center">Cód.
+                                                                    CC</th>
+                                                                <th scope="col">Centro de Custo</th>
+                                                                <th scope="col" class="text-center">Cota
+                                                                    Mensal</th>
+                                                                <th scope="col" class="text-center">
+                                                                    Consumo Mensal</th>
+                                                                <th scope="col" class="text-center">
+                                                                    Saldo Mensal</th>
+                                                                <th scope="col" class="text-center">Cota
+                                                                    Anual</th>
+                                                                <th scope="col" class="text-center">
+                                                                    Consumo Anual</th>
+                                                                <th scope="col" class="text-center">
+                                                                    Saldo Anual</th>
+                                                                <th scope="col" class="text-center">Mês
+                                                                </th>
+                                                                <th scope="col" class="text-center">Ano
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <c:forEach items="${controle.rows}" var="row">
+                                                                <%-- Verificar se os campos existem --%>
+                                                                    <c:set var="cotaMes" value="${row.COTA_MES}" />
+                                                                    <c:set var="consumoMes"
+                                                                        value="${row.CONSUMO_MES_ATUAL}" />
+                                                                    <c:set var="saldoMes"
+                                                                        value="${row.SALDO_MES_DISPONIVEL}" />
+                                                                    <c:set var="cotaAno" value="${row.COTA_ANO}" />
+                                                                    <c:set var="consumoAno"
+                                                                        value="${row.CONSUMO_ANO_ATUAL}" />
+                                                                    <c:set var="saldoAno"
+                                                                        value="${row.SALDO_ANO_DISPONIVEL}" />
+
+                                                                    <%-- Atualizar totais --%>
+                                                                        <c:set var="totalCotaMes"
+                                                                            value="${totalCotaMes + cotaMes}" />
+                                                                        <c:set var="totalConsumoMes"
+                                                                            value="${totalConsumoMes + consumoMes}" />
+                                                                        <c:set var="totalSaldoMes"
+                                                                            value="${totalSaldoMes + saldoMes}" />
+                                                                        <c:set var="totalCotaAno"
+                                                                            value="${totalCotaAno + cotaAno}" />
+                                                                        <c:set var="totalConsumoAno"
+                                                                            value="${totalConsumoAno + consumoAno}" />
+                                                                        <c:set var="totalSaldoAno"
+                                                                            value="${totalSaldoAno + saldoAno}" />
+
+                                                                        <%-- Formatar números (remover .0) de forma
+                                                                            SIMPLES --%>
+
+                                                                            <c:set var="cotaMesFmt">
+                                                                                <fmt:formatNumber value="${cotaMes}"
+                                                                                    pattern="#.##" />
+                                                                            </c:set>
+                                                                            <c:set var="consumoMesFmt">
+                                                                                <fmt:formatNumber value="${consumoMes}"
+                                                                                    pattern="#.##" />
+                                                                            </c:set>
+                                                                            <c:set var="saldoMesFmt">
+                                                                                <fmt:formatNumber value="${saldoMes}"
+                                                                                    pattern="#.##" />
+                                                                            </c:set>
+                                                                            <c:set var="cotaAnoFmt">
+                                                                                <fmt:formatNumber value="${cotaAno}"
+                                                                                    pattern="#.##" />
+                                                                            </c:set>
+                                                                            <c:set var="consumoAnoFmt">
+                                                                                <fmt:formatNumber value="${consumoAno}"
+                                                                                    pattern="#.##" />
+                                                                            </c:set>
+                                                                            <c:set var="saldoAnoFmt">
+                                                                                <fmt:formatNumber value="${saldoAno}"
+                                                                                    pattern="#.##" />
+                                                                            </c:set>
+
+                                                                            <%-- Determinar classes CSS --%>
+                                                                                <c:set var="classeSaldoMes" value="" />
+                                                                                <c:set var="classeConsumoMes"
+                                                                                    value="" />
+                                                                                <c:set var="classeSaldoAno" value="" />
+
+                                                                                <c:if test="${saldoMes <= 0}">
+                                                                                    <c:set var="classeSaldoMes"
+                                                                                        value="saldo-negativo" />
+                                                                                </c:if>
+                                                                                <c:if test="${saldoMes > 0}">
+                                                                                    <c:set var="classeSaldoMes"
+                                                                                        value="saldo-positivo" />
+                                                                                </c:if>
+
+                                                                                <c:if test="${consumoMes >= cotaMes}">
+                                                                                    <c:set var="classeConsumoMes"
+                                                                                        value="consumo-alto" />
+                                                                                </c:if>
+
+                                                                                <c:if test="${saldoAno <= 0}">
+                                                                                    <c:set var="classeSaldoAno"
+                                                                                        value="saldo-negativo" />
+                                                                                </c:if>
+                                                                                <c:if test="${saldoAno > 0}">
+                                                                                    <c:set var="classeSaldoAno"
+                                                                                        value="saldo-positivo" />
+                                                                                </c:if>
+
+                                                                                <tr>
+                                                                                    <th scope="row" class="text-center">
+                                                                                        ${row.CODCENCUS}
+                                                                                    </th>
+                                                                                    <td>${row.CENTRO_CUSTO}
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        ${cotaMesFmt}
+                                                                                    </td>
+                                                                                    <td
+                                                                                        class="text-center ${classeConsumoMes}">
+                                                                                        ${consumoMesFmt}
+                                                                                    </td>
+                                                                                    <td
+                                                                                        class="text-center ${classeSaldoMes}">
+                                                                                        ${saldoMesFmt}
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        ${cotaAnoFmt}
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        ${consumoAnoFmt}
+                                                                                    </td>
+                                                                                    <td
+                                                                                        class="text-center ${classeSaldoAno}">
+                                                                                        ${saldoAnoFmt}
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        ${row.MES_REFERENCIA}
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        ${row.ANO_REFERENCIA}
+                                                                                    </td>
+                                                                                </tr>
                                                             </c:forEach>
-                                                        </div>
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr class="table-secondary">
+                                                                <td colspan="2" class="text-right">
+                                                                    <strong>TOTAIS:</strong>
+                                                                </td>
+                                                                <td class="text-center"><strong>
+                                                                        <fmt:formatNumber value="${totalCotaMes}"
+                                                                            pattern="#,##0.##" />
+                                                                    </strong></td>
+                                                                <td class="text-center"><strong>
+                                                                        <fmt:formatNumber value="${totalConsumoMes}"
+                                                                            pattern="#,##0.##" />
+                                                                    </strong></td>
+                                                                <td class="text-center"><strong>
+                                                                        <fmt:formatNumber value="${totalSaldoMes}"
+                                                                            pattern="#,##0.##" />
+                                                                    </strong></td>
+                                                                <td class="text-center"><strong>
+                                                                        <fmt:formatNumber value="${totalCotaAno}"
+                                                                            pattern="#,##0.##" />
+                                                                    </strong></td>
+                                                                <td class="text-center"><strong>
+                                                                        <fmt:formatNumber value="${totalConsumoAno}"
+                                                                            pattern="#,##0.##" />
+                                                                    </strong></td>
+                                                                <td class="text-center"><strong>
+                                                                        <fmt:formatNumber value="${totalSaldoAno}"
+                                                                            pattern="#,##0.##" />
+                                                                    </strong></td>
+                                                                <td colspan="2"></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
 
-                                                        <c:choose>
-                                                            <c:when test="${empty controle.rows}">
-                                                                <div class="alert alert-warning">
-                                                                    <h4>Nenhum dado encontrado</h4>
-                                                                    <p>A query não retornou resultados.</p>
-                                                                </div>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <%-- Inicializar totais --%>
-                                                                    <c:set var="totalCotaMes" value="0" />
-                                                                    <c:set var="totalConsumoMes" value="0" />
-                                                                    <c:set var="totalSaldoMes" value="0" />
-                                                                    <c:set var="totalCotaAno" value="0" />
-                                                                    <c:set var="totalConsumoAno" value="0" />
-                                                                    <c:set var="totalSaldoAno" value="0" />
-
-                                                                    <table
-                                                                        class="table table-bordered table-condensed-main">
-                                                                        <thead class="thead-dark">
-                                                                            <tr>
-                                                                                <th scope="col" class="text-center">Cód.
-                                                                                    CC</th>
-                                                                                <th scope="col">Centro de Custo</th>
-                                                                                <th scope="col" class="text-center">Cota
-                                                                                    Mensal</th>
-                                                                                <th scope="col" class="text-center">
-                                                                                    Consumo Mensal</th>
-                                                                                <th scope="col" class="text-center">
-                                                                                    Saldo Mensal</th>
-                                                                                <th scope="col" class="text-center">Cota
-                                                                                    Anual</th>
-                                                                                <th scope="col" class="text-center">
-                                                                                    Consumo Anual</th>
-                                                                                <th scope="col" class="text-center">
-                                                                                    Saldo Anual</th>
-                                                                                <th scope="col" class="text-center">Mês
-                                                                                </th>
-                                                                                <th scope="col" class="text-center">Ano
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <c:forEach items="${controle.rows}"
-                                                                                var="row">
-                                                                                <%-- Verificar se os campos existem --%>
-                                                                                    <c:set var="cotaMes"
-                                                                                        value="${row.COTA_MES}" />
-                                                                                    <c:set var="consumoMes"
-                                                                                        value="${row.CONSUMO_MES_ATUAL}" />
-                                                                                    <c:set var="saldoMes"
-                                                                                        value="${row.SALDO_MES_DISPONIVEL}" />
-                                                                                    <c:set var="cotaAno"
-                                                                                        value="${row.COTA_ANO}" />
-                                                                                    <c:set var="consumoAno"
-                                                                                        value="${row.CONSUMO_ANO_ATUAL}" />
-                                                                                    <c:set var="saldoAno"
-                                                                                        value="${row.SALDO_ANO_DISPONIVEL}" />
-
-                                                                                    <%-- Atualizar totais --%>
-                                                                                        <c:set var="totalCotaMes"
-                                                                                            value="${totalCotaMes + cotaMes}" />
-                                                                                        <c:set var="totalConsumoMes"
-                                                                                            value="${totalConsumoMes + consumoMes}" />
-                                                                                        <c:set var="totalSaldoMes"
-                                                                                            value="${totalSaldoMes + saldoMes}" />
-                                                                                        <c:set var="totalCotaAno"
-                                                                                            value="${totalCotaAno + cotaAno}" />
-                                                                                        <c:set var="totalConsumoAno"
-                                                                                            value="${totalConsumoAno + consumoAno}" />
-                                                                                        <c:set var="totalSaldoAno"
-                                                                                            value="${totalSaldoAno + saldoAno}" />
-
-                                                                                        <%-- Formatar números (remover
-                                                                                            .0) de forma SIMPLES --%>
-
-                                                                                            <c:set var="cotaMesFmt">
-                                                                                                <fmt:formatNumber
-                                                                                                    value="${cotaMes}"
-                                                                                                    pattern="#.##" />
-                                                                                            </c:set>
-                                                                                            <c:set var="consumoMesFmt">
-                                                                                                <fmt:formatNumber
-                                                                                                    value="${consumoMes}"
-                                                                                                    pattern="#.##" />
-                                                                                            </c:set>
-                                                                                            <c:set var="saldoMesFmt">
-                                                                                                <fmt:formatNumber
-                                                                                                    value="${saldoMes}"
-                                                                                                    pattern="#.##" />
-                                                                                            </c:set>
-                                                                                            <c:set var="cotaAnoFmt">
-                                                                                                <fmt:formatNumber
-                                                                                                    value="${cotaAno}"
-                                                                                                    pattern="#.##" />
-                                                                                            </c:set>
-                                                                                            <c:set var="consumoAnoFmt">
-                                                                                                <fmt:formatNumber
-                                                                                                    value="${consumoAno}"
-                                                                                                    pattern="#.##" />
-                                                                                            </c:set>
-                                                                                            <c:set var="saldoAnoFmt">
-                                                                                                <fmt:formatNumber
-                                                                                                    value="${saldoAno}"
-                                                                                                    pattern="#.##" />
-                                                                                            </c:set>
-
-                                                                                            <%-- Determinar classes CSS
-                                                                                                --%>
-                                                                                                <c:set
-                                                                                                    var="classeSaldoMes"
-                                                                                                    value="" />
-                                                                                                <c:set
-                                                                                                    var="classeConsumoMes"
-                                                                                                    value="" />
-                                                                                                <c:set
-                                                                                                    var="classeSaldoAno"
-                                                                                                    value="" />
-
-                                                                                                <c:if
-                                                                                                    test="${saldoMes <= 0}">
-                                                                                                    <c:set
-                                                                                                        var="classeSaldoMes"
-                                                                                                        value="saldo-negativo" />
-                                                                                                </c:if>
-                                                                                                <c:if
-                                                                                                    test="${saldoMes > 0}">
-                                                                                                    <c:set
-                                                                                                        var="classeSaldoMes"
-                                                                                                        value="saldo-positivo" />
-                                                                                                </c:if>
-
-                                                                                                <c:if
-                                                                                                    test="${consumoMes >= cotaMes}">
-                                                                                                    <c:set
-                                                                                                        var="classeConsumoMes"
-                                                                                                        value="consumo-alto" />
-                                                                                                </c:if>
-
-                                                                                                <c:if
-                                                                                                    test="${saldoAno <= 0}">
-                                                                                                    <c:set
-                                                                                                        var="classeSaldoAno"
-                                                                                                        value="saldo-negativo" />
-                                                                                                </c:if>
-                                                                                                <c:if
-                                                                                                    test="${saldoAno > 0}">
-                                                                                                    <c:set
-                                                                                                        var="classeSaldoAno"
-                                                                                                        value="saldo-positivo" />
-                                                                                                </c:if>
-
-                                                                                                <tr>
-                                                                                                    <th scope="row"
-                                                                                                        class="text-center">
-                                                                                                        ${row.CODCENCUS}
-                                                                                                    </th>
-                                                                                                    <td>${row.CENTRO_CUSTO}
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="text-center">
-                                                                                                        ${cotaMesFmt}
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="text-center ${classeConsumoMes}">
-                                                                                                        ${consumoMesFmt}
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="text-center ${classeSaldoMes}">
-                                                                                                        ${saldoMesFmt}
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="text-center">
-                                                                                                        ${cotaAnoFmt}
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="text-center">
-                                                                                                        ${consumoAnoFmt}
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="text-center ${classeSaldoAno}">
-                                                                                                        ${saldoAnoFmt}
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="text-center">
-                                                                                                        ${row.MES_REFERENCIA}
-                                                                                                    </td>
-                                                                                                    <td
-                                                                                                        class="text-center">
-                                                                                                        ${row.ANO_REFERENCIA}
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                            </c:forEach>
-                                                                        </tbody>
-                                                                        <tfoot>
-                                                                            <tr class="table-secondary">
-                                                                                <td colspan="2" class="text-right">
-                                                                                    <strong>TOTAIS:</strong></td>
-                                                                                <td class="text-center"><strong>
-                                                                                        <fmt:formatNumber
-                                                                                            value="${totalCotaMes}"
-                                                                                            pattern="#,##0.##" />
-                                                                                    </strong></td>
-                                                                                <td class="text-center"><strong>
-                                                                                        <fmt:formatNumber
-                                                                                            value="${totalConsumoMes}"
-                                                                                            pattern="#,##0.##" />
-                                                                                    </strong></td>
-                                                                                <td class="text-center"><strong>
-                                                                                        <fmt:formatNumber
-                                                                                            value="${totalSaldoMes}"
-                                                                                            pattern="#,##0.##" />
-                                                                                    </strong></td>
-                                                                                <td class="text-center"><strong>
-                                                                                        <fmt:formatNumber
-                                                                                            value="${totalCotaAno}"
-                                                                                            pattern="#,##0.##" />
-                                                                                    </strong></td>
-                                                                                <td class="text-center"><strong>
-                                                                                        <fmt:formatNumber
-                                                                                            value="${totalConsumoAno}"
-                                                                                            pattern="#,##0.##" />
-                                                                                    </strong></td>
-                                                                                <td class="text-center"><strong>
-                                                                                        <fmt:formatNumber
-                                                                                            value="${totalSaldoAno}"
-                                                                                            pattern="#,##0.##" />
-                                                                                    </strong></td>
-                                                                                <td colspan="2"></td>
-                                                                            </tr>
-                                                                        </tfoot>
-                                                                    </table>
-
-                                                                    <div class="mt-3">
-                                                                        <small class="text-muted">
-                                                                            <span class="saldo-positivo">●</span> Saldo
-                                                                            positivo |
-                                                                            <span class="saldo-negativo">●</span> Saldo
-                                                                            negativo |
-                                                                            <span class="consumo-alto">●</span> Consumo
-                                                                            igual ou superior à cota
-                                                                        </small>
-                                                                    </div>
-                                                            </c:otherwise>
-                                                        </c:choose>
+                                                    <div class="mt-3">
+                                                        <small class="text-muted">
+                                                            <span class="saldo-positivo">●</span> Saldo
+                                                            positivo |
+                                                            <span class="saldo-negativo">●</span> Saldo
+                                                            negativo |
+                                                            <span class="consumo-alto">●</span> Consumo
+                                                            igual ou superior à cota
+                                                        </small>
+                                                    </div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </section>
                             </div>
