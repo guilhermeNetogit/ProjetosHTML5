@@ -6,20 +6,39 @@
     <title>Teste JavaScript</title>
     <link rel='stylesheet' href='main.css'>
     <script>
+
+        var quebrada = false;
+
         function acenderLampada() {
-           document.getElementById("lampada").src = "projeto-glass-html5/_imagens/lampada-acesa.jpg";
+            if (!quebrada) {
+                document.getElementById("lampada").src = "../projeto-glass-site-html5/_imagens/lampada-acesa.jpg";
+            }
         }
+
         function apagarLampada() {
-           document.getElementById("lampada").src = "projeto-glass-html5/_imagens/lampada-apagada.jpg";
+            if (!quebrada) {
+                document.getElementById("lampada").src = "../projeto-glass-site-html5/_imagens/lampada-apagada.jpg";
+            }
         }
-        function quebrarLampada() {
-           document.getElementById("lampada").src = "projeto-glass-html5/_imagens/lampada-quebrada.jpg";
+
+        function clicarLampada() {
+                if (!quebrada) {
+                    document.getElementById("lampada").src = "../projeto-glass-site-html5/_imagens/lampada-quebrada.jpg";
+                    quebrada = true;
+                } else {
+                    document.getElementById("lampada").src = "../projeto-glass-site-html5/_imagens/lampada-apagada.jpg";
+                    quebrada = false;
+                }   
         }
     </script>
 </head>
 <body>
     <h1>Acenda a lâmpada</h1>
-    <img src="projeto-glass-html5/_imagens/lampada-apagada.jpg" id="lampada" onmousemove="acenderLampada()" onmouseout="apagarLampada()"
-    onclick="quebrarLampada()">
+    <img src="../projeto-glass-site-html5/_imagens/lampada-apagada.jpg" id="lampada" onmousemove="acenderLampada()" onmouseout="apagarLampada()"
+    onclick="clicarLampada()"><br>
+
+    <script>
+        document.write("Hoje é " + new Date());
+    </script>
 </body>
 </html>
