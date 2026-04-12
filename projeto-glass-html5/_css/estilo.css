@@ -32,6 +32,14 @@
         padding: 10px;
     }
     
+    video#filme {
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 15px;
+        max-width: 100%;
+        height: auto;
+    }
+
     /* Formatação de imagens com legenda */
 
     header#cabecalho img#icone {

@@ -6,9 +6,14 @@
     <title>Tudo sobre Google Glass</title>
     <link rel="stylesheet" href="_css/estilo.css"/>
     <link rel="stylesheet" href="_css/form.css"/>
+    <script language="javascript" src="_javascript/funcoes.js"></script>
+    <script>function calcularTotal() {
+        var quantidade = parseInt(document.getElementById('cQuantidade').value);
+        var preco = 5000; // Exemplo de preço unitário
+        var total = quantidade * preco;
+        document.getElementById('cTotal').value = total.toFixed(2);
+    }</script>
 </head>
-<script language="javascript" src="_javascript/funcoes.js">
-</script>
 <body>
     <div id="interface">
     <header id="cabecalho">
@@ -42,14 +47,14 @@
 </hgroup>
 </header>
 
-<form action="">
+<form method="post" id="fContato" action="mailto:eng.guilhermeneto@hotmail.com" oninput="calcularTotal();">
     <fieldset id="usuario">
         <legend>Identificação do Usuário</legend>
             <p><label for="cNome">Nome:</label> <input type="text" name="tNome" id="cNome" size="25" maxlength="30" placeholder="Digite o nome completo aqui..."/></p>
             <p><label for="cSenha">Senha:</label> <input type="password" name="tSenha" id="cSenha" size="25" maxlength="15" placeholder="Digite a senha aqui..."/></p>
             <p><label for="cEmail">E-mail:</label> <input type="email" name="tEmail" id="cEmail" size="25" maxlength="30" placeholder="Digite o e-mail aqui..."/></p>
             <fieldset id="sexo"><legend>Sexo:</legend>
-                <input type="radio" name="tSexo" id="cMasculino"><label for="cMasculino">Masculino</label></input>
+                <input type="radio" name="tSexo" id="cMasculino"><label for="cMasculino">Masculino<br/></label></input>
                 <input type="radio" name="tSexo" id="cFeminino"><label for="cFeminino">Feminino</label></input>
             </fieldset>
             <p>Data de Nascimento: <input type="date" name="tNascimento" id="cNascimento"/></p>
@@ -59,26 +64,81 @@
         <legend>Endereço do Usuário</legend>
             <p><label for="cLogradouro">Logradouro:</label> <input type="text" name="tRua" id="cRua" size="25" maxlength="70" placeholder="Rua, Av., Praça,..."/></p>
             <p><label for="cNumero">Número:</label> <input type="number" name="tNumero" id="cNumero" min="0" max="99999" size="5" maxlength="5" placeholder="Nº..."/></p>
-            <p><label for="cCidade">Cidade:</label> <input type="text" name="tCidade" id="cCidade" size="25" maxlength="30" placeholder="Digite a cidade aqui..."/></p>
-            <p><label for="cEstado">Estado:</label> <input type="text" name="tEstado" id="cEstado" size="2" maxlength="2" placeholder="UF"/></p>
+            <p><label for="cCidade">Cidade:</label> <input type="text" name="tCidade" id="cCidade" size="25" maxlength="40" placeholder="Digite a cidade aqui..." list="cidades"/></p>
+            <datalist id="cidades">
+                <option value="São Paulo"></option>
+                <option value="Rio de Janeiro"></option>
+                <option value="Brasília"></option>
+                <option value="Salvador"></option>
+                <option value="Fortaleza"></option>
+                <option value="Belo Horizonte"></option>
+                <option value="Manaus"></option>
+                <option value="Curitiba"></option>
+                <option value="Recife"></option>
+                <option value="Porto Alegre"></option>
+                <option value="Uberaba"></option>
+                <option value="Uberlândia"></option>
+            </datalist>
+            <p><label for="cEstado">Estado:</label> <select name="tEstado" id="cEstado">
+                <optgroup label="Região Norte">
+                    <option value="AC">Acre</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="PA">Pará</option>
+                    <option value="RR">Roraima</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="TO">Tocantins</option>
+                </optgroup>
+
+                <optgroup label="Região Nordeste">
+                    <option value="AL">Alagoas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="SE">Sergipe</option>
+                </optgroup>
+
+                <optgroup label="Região Centro-Oeste">
+                    <option value="DF">Distrito Federal</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                </optgroup>
+
+                <optgroup label="Região Sudeste">
+                    <option value="ES">Espírito Santo</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="SP">São Paulo</option>
+                </optgroup>
+
+                <optgroup label="Região Sul">
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="PR">Paraná</option>
+                </optgroup>
+            </select></p>
     </fieldset>
     
     <fieldset id="mensagem">
         <legend>Mensagem do Usuário</legend>
-            Grau de Urgência:
-            Mensagem:
+            <p><label for="cUrgencia">Grau de Urgência:</label>&nbsp;Mín.<input type="range" name="tUrgencia" id="cUrgencia" min="0" max="10" step="2"/>Máx.</p>
+            <p><label for="cMensagem">Mensagem:</label><textarea name="tMsg" id="cMsg" cols="40" rows="5" placeholder="Digite sua mensagem aqui..."></textarea></p>
     </fieldset>
     
     <fieldset id="pedido">
         <legend>Quero um Google Glass</legend>
-            Gostaria de adquirir um Google Glass quando disponível
-            Cor:
-            Quantidade:
-            Preço Total: R$
+            <p><input type="checkbox" name="tPedido" id="cPedido" checked/><label for="cPedido">Gostaria de adquirir um Google Glassquando disponível</label></p>
+            <p><label for="cCor">Cor:&nbsp;</label><input type="color" name="tCor" id="cCor" value="#0000ff"></p>
+            <p><label for="cQuantidade">Quantidade:&nbsp;</label><input type="number" name="tQuantidade" id="cQuantidade" min="1" max="99" value="0"></p>
+            <p><label for="cTotal">Valor Total: R$</label><input type="text" name="tTotal" id="cTotal" placeholder="Total a pagar" readonly></p>
     </fieldset>
     
-    
-    [BOTÃO ENVIAR]
+    <input type="image" name="tEnviar" src="_imagens/botao-enviar.png" value="Enviar" onclick="calcularTotal()"/> 
 </form>
 
 <footer id="rodape">
