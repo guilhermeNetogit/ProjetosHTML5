@@ -1,47 +1,149 @@
-Google Glass
-A revolução do Google está chegando
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tudo sobre Google Glass</title>
+    <link rel="stylesheet" href="_css/estilo.css"/>
+    <link rel="stylesheet" href="_css/form.css"/>
+    <script language="javascript" src="_javascript/funcoes.js"></script>
+    <script>function calcularTotal() {
+        var quantidade = parseInt(document.getElementById('cQuantidade').value);
+        var preco = 5000; // Exemplo de preço unitário
+        var total = quantidade * preco;
+        document.getElementById('cTotal').value = total.toFixed(2);
+    }</script>
+</head>
+<body>
+    <div id="interface">
+    <header id="cabecalho">
+    <hgroup>
+    <h1>Google Glass</h1>
+    <h2>A revolução do Google está chegando</h2>
+    </hgroup>
 
-[AQUI ENTRA UMA FOTO]
+    <img id="icone" src="_imagens/contato.png">
 
-Menu Principal
-- Home
-- Especificações
-- Fotos
-- Multimídia
-- Fale conosco
+<nav id="menu">
+    <h2>Menu Principal</h2>
+    <ul>
+        <li onmouseover="mudarFoto('_imagens/home.png')" onmouseout="mudarFoto('_imagens/contato.png')"><a href="index.html">Home</a></li>
+        <li onmouseover="mudarFoto('_imagens/especificacoes.png')" onmouseout="mudarFoto('_imagens/contato.png')"><a href="specs.html">Especificações</a></li>
+        <li onmouseover="mudarFoto('_imagens/fotos.png')" onmouseout="mudarFoto('_imagens/contato.png')"><a href="fotos.html">Fotos</a></li>
+        <li onmouseover="mudarFoto('_imagens/multimidia.png')" onmouseout="mudarFoto('_imagens/contato.png')"><a href="multimidia.html">Multimídia</a></li>
+        <li onmouseover="mudarFoto('_imagens/contato.png')" onmouseout="mudarFoto('_imagens/contato.png')"><a href="fale-conosco.html">Fale conosco</a></li>
+    </ul>
+</nav>
+</header>
 
-Fale Conosco > Contato
-Formulário de Contato
-por Gustavo Guanabara
-Atualizado em 01/Maio/2013
+<section id="corpo-full">
+    <article id="noticia-principal">
+        <header id="cabecalho-artigo">
+<hgroup>
+    <h4>Fale conosco > Contato</h4>
+    <h2>Formulário de Contato</h2>
+    <h3>por Guilherme Neto</h3>
+    <h4 class="direita">Atualizado em 09/Abril/2026</h4>
+</hgroup>
+</header>
 
-Identificação do Usuário
-    Nome:
-    Senha:
-    E-mail:
-    Sexo:
-        - Masculino
-        - Feminino
-    Data de Nascimento:
+<form method="post" id="fContato" action="mailto:eng.guilhermeneto@hotmail.com" oninput="calcularTotal();">
+    <fieldset id="usuario">
+        <legend>Identificação do Usuário</legend>
+            <p><label for="cNome">Nome:</label> <input type="text" name="tNome" id="cNome" size="25" maxlength="30" placeholder="Digite o nome completo aqui..."/></p>
+            <p><label for="cSenha">Senha:</label> <input type="password" name="tSenha" id="cSenha" size="25" maxlength="15" placeholder="Digite a senha aqui..."/></p>
+            <p><label for="cEmail">E-mail:</label> <input type="email" name="tEmail" id="cEmail" size="25" maxlength="30" placeholder="Digite o e-mail aqui..."/></p>
+            <fieldset id="sexo"><legend>Sexo:</legend>
+                <input type="radio" name="tSexo" id="cMasculino"><label for="cMasculino">Masculino<br/></label></input>
+                <input type="radio" name="tSexo" id="cFeminino"><label for="cFeminino">Feminino</label></input>
+            </fieldset>
+            <p>Data de Nascimento: <input type="date" name="tNascimento" id="cNascimento"/></p>
+    </fieldset>
+    
+    <fieldset id="endereco">
+        <legend>Endereço do Usuário</legend>
+            <p><label for="cLogradouro">Logradouro:</label> <input type="text" name="tRua" id="cRua" size="25" maxlength="70" placeholder="Rua, Av., Praça,..."/></p>
+            <p><label for="cNumero">Número:</label> <input type="number" name="tNumero" id="cNumero" min="0" max="99999" size="5" maxlength="5" placeholder="Nº..."/></p>
+            <p><label for="cCidade">Cidade:</label> <input type="text" name="tCidade" id="cCidade" size="25" maxlength="40" placeholder="Digite a cidade aqui..." list="cidades"/></p>
+            <datalist id="cidades">
+                <option value="São Paulo"></option>
+                <option value="Rio de Janeiro"></option>
+                <option value="Brasília"></option>
+                <option value="Salvador"></option>
+                <option value="Fortaleza"></option>
+                <option value="Belo Horizonte"></option>
+                <option value="Manaus"></option>
+                <option value="Curitiba"></option>
+                <option value="Recife"></option>
+                <option value="Porto Alegre"></option>
+                <option value="Uberaba"></option>
+                <option value="Uberlândia"></option>
+            </datalist>
+            <p><label for="cEstado">Estado:</label> <select name="tEstado" id="cEstado">
+                <optgroup label="Região Norte">
+                    <option value="AC">Acre</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="PA">Pará</option>
+                    <option value="RR">Roraima</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="TO">Tocantins</option>
+                </optgroup>
 
-Endereço do Usuário
-    Logradouro:
-    Número:
-    Estado:
-    Cidade:
+                <optgroup label="Região Nordeste">
+                    <option value="AL">Alagoas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="SE">Sergipe</option>
+                </optgroup>
 
-Mensagem do Usuário
-    Grau de Urgência:
-    Mensagem:
+                <optgroup label="Região Centro-Oeste">
+                    <option value="DF">Distrito Federal</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                </optgroup>
 
-Quero um Google Glass
-    Gostaria de adquirir um Google Glass quando disponível
-    Cor:
-    Quantidade:
-    Preço Total: R$
+                <optgroup label="Região Sudeste">
+                    <option value="ES">Espírito Santo</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="SP">São Paulo</option>
+                </optgroup>
 
+                <optgroup label="Região Sul">
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="PR">Paraná</option>
+                </optgroup>
+            </select></p>
+    </fieldset>
+    
+    <fieldset id="mensagem">
+        <legend>Mensagem do Usuário</legend>
+            <p><label for="cUrgencia">Grau de Urgência:</label>&nbsp;Mín.<input type="range" name="tUrgencia" id="cUrgencia" min="0" max="10" step="2"/>Máx.</p>
+            <p><label for="cMensagem">Mensagem:</label><textarea name="tMsg" id="cMsg" cols="40" rows="5" placeholder="Digite sua mensagem aqui..."></textarea></p>
+    </fieldset>
+    
+    <fieldset id="pedido">
+        <legend>Quero um Google Glass</legend>
+            <p><input type="checkbox" name="tPedido" id="cPedido" checked/><label for="cPedido">Gostaria de adquirir um Google Glassquando disponível</label></p>
+            <p><label for="cCor">Cor:&nbsp;</label><input type="color" name="tCor" id="cCor" value="#0000ff"></p>
+            <p><label for="cQuantidade">Quantidade:&nbsp;</label><input type="number" name="tQuantidade" id="cQuantidade" min="1" max="99" value="0"></p>
+            <p><label for="cTotal">Valor Total: R$</label><input type="text" name="tTotal" id="cTotal" placeholder="Total a pagar" readonly></p>
+    </fieldset>
+    
+    <input type="image" name="tEnviar" src="_imagens/botao-enviar.png" value="Enviar" onclick="calcularTotal()"/> 
+</form>
 
-[BOTÃO ENVIAR]
-
-Copyright 2013 - by Gustavo Guanabara
-Facebook | Twitter
+<footer id="rodape">
+    <p>Copyright&copy; 2026 - by Guilherme Neto <br> <a href="https://www.instagram.com" target="_blank">Instagram</a> | <a href="https://github.com/guilhermeNetogit" target="_blank">GitHub</a></p>
+</footer>
+    </div>
+<body>
+</html>
