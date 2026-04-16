@@ -1,0 +1,91 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8" isELIgnored ="false"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="java.util.*" %>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="snk" uri="/WEB-INF/tld/sankhyaUtil.tld" %>
+<html>
+<head>
+	<title>HTML5 Component</title>
+	<link rel="stylesheet" type="text/css" href="${BASE_FOLDER}css/mainCSS.css">
+	<link rel="stylesheet" type="text/css" href="${BASE_FOLDER}css/style.css">
+    <!-- partial:index.partial.html -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script><script  src="${BASE_FOLDER}js/script.js"></script>
+
+
+    <!------ Include the above in your HEAD tag ---------->
+
+	<snk:load/>
+</head>
+
+
+ 
+<body>
+  <div id="content"> 
+ 
+
+  <snk:query var="teste"> SELECT CODUSU, USUARIO , GRUPO, NOME, EMAIL, EMPRESA  FROM 
+    ( SELECT USU.CODUSU AS CODUSU, USU.NOMEUSU AS USUARIO , USU.CODGRUPO AS CODGRUPO, GRU.NOMEGRUPO AS GRUPO,  USU.CODEMP, USU.NOMEUSUCPLT AS NOME, USU.EMAIL,   EMP.NOMEFANTASIA AS EMPRESA 
+      FROM TSIUSU USU 
+      LEFT JOIN TSIEMP EMP ON EMP.CODEMP = USU.CODEMP 
+      LEFT JOIN TSIGRU GRU ON GRU.CODGRUPO = USU.CODGRUPO 
+      WHERE USU.CODGRUPO <> 0 AND USU.CODUSU <> 0 
+      )   
+  </snk:query>
+
+
+<section> 
+    <div class="container">
+    	<div class="row">
+        <c:forEach items="${teste.rows}" var="row">   
+      
+              <div class="col-md-4 mt-4">
+                <div class="card profile-card-5 shadow-lg">
+
+                     <div class="card-img-block">
+                        <img src="${BASE_FOLDER}img/1615493224735.jfif" width="318" height="92" >
+                        <img class="avatar rounded-circle" src="/mge/Usuario@FOTO@CODUSU=${row.codusu} .dbimage" width="82" height="82" style="vertical-align:middle;margin:-40px 110px"/>
+                     <!--   <img class="avatar rounded-circle" src="${BASE_FOLDER}img/image_1.png"  width="82" height="82" style="vertical-align:middle;margin:-40px 110px">  -->
+                     </div>
+                  
+                    <div class="card-body text-center">
+                      <h5 class="card-title mt-4 mb-0"><c:out value="${row.NOME}" /></h5>
+                     <!-- <h5>Email:</h5> -->
+                      <span><c:out value="${row.EMAIL}" /></span>
+                      <hr>
+                      <!--<h5>Grupo:</h5> -->
+                      <span><c:out value="${row.GRUPO}" /></span>
+                      <br>
+                     <!-- <h5> Função: </h5> -->
+                       <span> Operador de M&A </span>
+                      <h5>Empresa:</h5>  
+                      <span class="card-text mt-2"><c:out value="${row.EMPRESA}" /></span>
+                      <hr>
+                      <h5>Pontuação</h5>
+                      <span class="fa fa-star checked2"></span>
+                      <span class="fa fa-star checked2"></span>
+                      <span class="fa fa-star checked2"></span>
+                      <span class="fa fa-star checked2"></span>
+                      <span class="fa fa-star"></span>
+                    </div>
+                  </div>
+               </div>
+
+              </c:forEach>
+   
+    	</div>
+    </div>
+</section>
+<!-- partial -->
+ 
+
+</div>
+  
+</body>
+
+
+
+</html>
